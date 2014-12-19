@@ -1,3 +1,5 @@
+(function() {
+'use strict';
 var app = angular.module('app', [], function config($httpProvider) {
 	$httpProvider.interceptors.push('AuthInterceptor');
 });
@@ -11,6 +13,10 @@ app.controller('MainCtrl', function MainCtrl(RandomUserFactory, UserFactory) {
 	vm.login = login;
 	vm.logout = logout;
 
+	//initialization
+	UserFactory.getUser().then(function success(response) {
+		vm.user = response.data;
+	})
 
 	function getRandomUser() {
 		RandomUserFactory.getUser().then(function success(response) {
@@ -46,11 +52,12 @@ app.factory('RandomUserFactory', function RandomUserFactory($http, API_URL) {
 	}
 });
 
-app.factory('UserFactory', function UserFactory($http, API_URL, AuthTokenFactory) {
+app.factory('UserFactory', function UserFactory($http, API_URL, AuthTokenFactory, $q) {
 	'use strict'
 	return {
 		login: login,
-		logout: logout
+		logout: logout,
+		getUser: getUser
 	};
 
 	function login(username, password) {
@@ -66,7 +73,16 @@ app.factory('UserFactory', function UserFactory($http, API_URL, AuthTokenFactory
 	function logout() {
 		AuthTokenFactory.setToken();
 	}
+
+	function getUser() {
+		if (AuthTokenFactory.getToken()) {
+			return $http.get(API_URL + '/me');
+		} else {
+			return $q.reject({data: 'client has no auth token'});
+		}
+	}
 });
+
 
 app.factory('AuthTokenFactory', function AuthTokenFactory($window) {
 	'use strict';
@@ -107,3 +123,4 @@ app.factory('AuthInterceptor', function AuthInterceptor(AuthTokenFactory) {
 		return config;
 	}
 });
+})();
