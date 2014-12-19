@@ -23,6 +23,8 @@
   },
   "homepage": "https://github.com/xasos/jwt-sample",
   "dependencies": {
-    "faker": "^2.0.1"
+    "cors": "^2.5.2",
+    "express": "^4.10.6",
+    "faker": "^2.1.1"
   }
 }
