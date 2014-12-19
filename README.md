@@ -3,7 +3,7 @@ jwt-example
 
 JWT (JSON Web Token) Implementation with Angular/Node.
 
-**Disclaimer:** This project is meant to demonstrate JSON Web Tokens on the client and server sider, and is not necessarily secure.
+**Disclaimer:** This project is meant to demonstrate JSON Web Tokens on the client and server side, and is not necessarily secure.
 
 ## How to Run
 ```sh
